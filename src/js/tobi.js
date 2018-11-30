@@ -7,7 +7,7 @@
  *
  * MIT License
  */
-(function (root, factory) {
+(((root, factory) => {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define(factory)
@@ -20,45 +20,44 @@
     // Browser globals (root is window)
     root.Tobi = factory()
   }
-}(this, function () {
-  'use strict'
-
-  var Tobi = function Tobi (userOptions) {
+})(this, () => {
+  const Tobi = function Tobi (userOptions) {
     /**
      * Global variables
      *
      */
-    var config = {},
-      browserWindow = window,
-      transformProperty = null,
-      gallery = [],
-      figcaptionId = 0,
-      elementsLength = 0,
-      lightbox = null,
-      slider = null,
-      sliderElements = [],
-      prevButton = null,
-      nextButton = null,
-      closeButton = null,
-      counter = null,
-      currentIndex = 0,
-      drag = {},
-      isDraggingX = false,
-      isDraggingY = false,
-      pointerDown = false,
-      lastFocus = null,
-      firstFocusableEl = null,
-      lastFocusableEl = null,
-      offset = null,
-      offsetTmp = null,
-      resizeTicking = false,
-      touchmoveTicking = false,
-      mousemoveTicking = false,
-      isYouTubeDependencieLoaded = false,
-      waitingEls = [],
-      player = [],
-      playerId = 0,
-      x = 0
+    let config = {}
+
+    const browserWindow = window
+    let transformProperty = null
+    const gallery = []
+    let figcaptionId = 0
+    let elementsLength = 0
+    let lightbox = null
+    let slider = null
+    const sliderElements = []
+    let prevButton = null
+    let nextButton = null
+    let closeButton = null
+    let counter = null
+    let currentIndex = 0
+    let drag = {}
+    let isDraggingX = false
+    let isDraggingY = false
+    let pointerDown = false
+    let lastFocus = null
+    let firstFocusableEl = null
+    let lastFocusableEl = null
+    let offset = null
+    let offsetTmp = null
+    let resizeTicking = false
+    let touchmoveTicking = false
+    let mousemoveTicking = false
+    let isYouTubeDependencieLoaded = false
+    const waitingEls = []
+    const player = []
+    let playerId = 0
+    let x = 0
 
     /**
      * Merge default options with user options
@@ -66,9 +65,9 @@
      * @param {Object} userOptions - Optional user options
      * @returns {Object} - Custom options
      */
-    var mergeOptions = function mergeOptions (userOptions) {
+    const mergeOptions = function mergeOptions (userOptions) {
       // Default options
-      var options = {
+      const options = {
         selector: '.lightbox',
         captions: true,
         captionsSelector: 'img',
@@ -99,7 +98,7 @@
       }
 
       if (userOptions) {
-        Object.keys(userOptions).forEach(function (key) {
+        Object.keys(userOptions).forEach(key => {
           options[key] = userOptions[key]
         })
       }
@@ -112,7 +111,7 @@
      *
      * @returns {string} - Transform property supported by client
      */
-    var transformSupport = function transformSupport () {
+    const transformSupport = function transformSupport () {
       return typeof document.documentElement.style.transform === 'string' ? 'transform' : 'WebkitTransform'
     }
 
@@ -120,18 +119,18 @@
      * Types - you can add new type to support something new
      *
      */
-    var supportedElements = {
+    const supportedElements = {
       image: {
-        checkSupport: function (el) {
+        checkSupport (el) {
           return !el.hasAttribute('data-type') && el.href.match(/\.(png|jpe?g|tiff|tif|gif|bmp|webp|svg|ico)$/)
         },
 
-        init: function (el, container) {
-          var figure = document.createElement('figure'),
-            figcaption = document.createElement('figcaption'),
-            image = document.createElement('img'),
-            thumbnail = el.querySelector('img'),
-            loadingIndicator = document.createElement('div')
+        init (el, container) {
+          const figure = document.createElement('figure')
+          const figcaption = document.createElement('figcaption')
+          const image = document.createElement('img')
+          const thumbnail = el.querySelector('img')
+          const loadingIndicator = document.createElement('div')
 
           image.style.opacity = '0'
 
@@ -156,7 +155,7 @@
             }
 
             if (figcaption.textContent) {
-              figcaption.id = 'tobi-figcaption-' + figcaptionId
+              figcaption.id = `tobi-figcaption-${figcaptionId}`
               figure.appendChild(figcaption)
 
               image.setAttribute('aria-labelledby', figcaption.id)
@@ -180,22 +179,22 @@
           container.setAttribute('data-type', 'image')
         },
 
-        onPreload: function (container) {
+        onPreload (container) {
           // Same as preload
           supportedElements.image.onLoad(container)
         },
 
-        onLoad: function (container) {
-          var image = container.querySelector('img')
+        onLoad (container) {
+          const image = container.querySelector('img')
 
           if (!image.hasAttribute('data-src')) {
             return
           }
 
-          var figcaption = container.querySelector('figcaption'),
-            loadingIndicator = container.querySelector('.tobi-loader')
+          const figcaption = container.querySelector('figcaption')
+          const loadingIndicator = container.querySelector('.tobi-loader')
 
-          image.onload = function () {
+          image.onload = () => {
             container.removeChild(loadingIndicator)
             image.style.opacity = '1'
 
@@ -208,26 +207,26 @@
           image.removeAttribute('data-src')
         },
 
-        onLeave: function (container) {
+        onLeave (container) {
           // Nothing
         },
 
-        onCleanup: function (container) {
+        onCleanup (container) {
           // Nothing
         }
       },
 
       html: {
-        checkSupport: function (el) {
+        checkSupport (el) {
           return checkType(el, 'html')
         },
 
-        init: function (el, container) {
-          var targetSelector = el.hasAttribute('href') ? el.getAttribute('href') : el.getAttribute('data-target'),
-            target = document.querySelector(targetSelector)
+        init (el, container) {
+          const targetSelector = el.hasAttribute('href') ? el.getAttribute('href') : el.getAttribute('data-target')
+          const target = document.querySelector(targetSelector)
 
           if (!target) {
-            throw new Error('Ups, I can\'t find the target ' + targetSelector + '.')
+            throw new Error(`Ups, I can't find the target ${targetSelector}.`)
           }
 
           // Add content to container
@@ -237,12 +236,12 @@
           container.setAttribute('data-type', 'html')
         },
 
-        onPreload: function (container) {
+        onPreload (container) {
           // Nothing
         },
 
-        onLoad: function (container) {
-          var video = container.querySelector('video')
+        onLoad (container) {
+          const video = container.querySelector('video')
 
           if (video) {
             if (video.hasAttribute('data-time') && video.readyState > 0) {
@@ -257,8 +256,8 @@
           }
         },
 
-        onLeave: function (container) {
-          var video = container.querySelector('video')
+        onLeave (container) {
+          const video = container.querySelector('video')
 
           if (video) {
             if (!video.paused) {
@@ -273,14 +272,14 @@
           }
         },
 
-        onCleanup: function (container) {
-          var video = container.querySelector('video')
+        onCleanup (container) {
+          const video = container.querySelector('video')
 
           if (video) {
             if (video.readyState > 0 && video.readyState < 3 && video.duration !== video.currentTime) {
               // Some data has been loaded but not the whole package.
               // In order to save bandwidth, stop downloading as soon as possible.
-              var clone = video.cloneNode(true)
+              const clone = video.cloneNode(true)
 
               removeSources(video)
               video.load()
@@ -294,13 +293,13 @@
       },
 
       iframe: {
-        checkSupport: function (el) {
+        checkSupport (el) {
           return checkType(el, 'iframe')
         },
 
-        init: function (el, container) {
-          var iframe = document.createElement('iframe'),
-            href = el.hasAttribute('href') ? el.getAttribute('href') : el.getAttribute('data-target')
+        init (el, container) {
+          const iframe = document.createElement('iframe')
+          const href = el.hasAttribute('href') ? el.getAttribute('href') : el.getAttribute('data-target')
 
           iframe.setAttribute('frameborder', '0')
           iframe.setAttribute('src', '')
@@ -313,32 +312,32 @@
           container.setAttribute('data-type', 'iframe')
         },
 
-        onPreload: function (container) {
+        onPreload (container) {
           // Nothing
         },
 
-        onLoad: function (container) {
-          var iframe = container.querySelector('iframe')
+        onLoad (container) {
+          const iframe = container.querySelector('iframe')
 
           iframe.setAttribute('src', iframe.getAttribute('data-src'))
         },
 
-        onLeave: function (container) {
+        onLeave (container) {
           // Nothing
         },
 
-        onCleanup: function (container) {
+        onCleanup (container) {
           // Nothing
         }
       },
 
       youtube: {
-        checkSupport: function (el) {
+        checkSupport (el) {
           return checkType(el, 'youtube')
         },
 
-        init: function (el, container) {
-          var iframePlaceholder = document.createElement('div')
+        init (el, container) {
+          const iframePlaceholder = document.createElement('div')
 
           // Add iframePlaceholder to container
           container.appendChild(iframePlaceholder)
@@ -364,23 +363,23 @@
           playerId++
         },
 
-        onPreload: function (container) {
+        onPreload (container) {
           // Nothing
         },
 
-        onLoad: function (container) {
+        onLoad (container) {
           if (config.autoplayVideo) {
             player[container.getAttribute('data-player')].playVideo()
           }
         },
 
-        onLeave: function (container) {
+        onLeave (container) {
           if (player[container.getAttribute('data-player')].getPlayerState() === 1) {
             player[container.getAttribute('data-player')].pauseVideo()
           }
         },
 
-        onCleanup: function (container) {
+        onCleanup (container) {
           if (player[container.getAttribute('data-player')].getPlayerState() === 1) {
             player[container.getAttribute('data-player')].pauseVideo()
           }
@@ -392,7 +391,7 @@
      * Init
      *
      */
-    var init = function init (userOptions) {
+    const init = function init (userOptions) {
       // Merge user options into defaults
       config = mergeOptions(userOptions)
 
@@ -406,14 +405,14 @@
       }
 
       // Get a list of all elements within the document
-      var els = document.querySelectorAll(config.selector)
+      const els = document.querySelectorAll(config.selector)
 
       if (!els) {
-        throw new Error('Ups, I can\'t find the selector ' + config.selector + '.')
+        throw new Error(`Ups, I can't find the selector ${config.selector}.`)
       }
 
       // Execute a few things once per element
-      Array.prototype.forEach.call(els, function (el) {
+      Array.prototype.forEach.call(els, el => {
         checkDependencies(el)
       })
     }
@@ -427,8 +426,8 @@
       // Check if there is a YouTube video and if the YouTube iframe-API is ready
       if (document.querySelector('[data-type="youtube"]') !== null && !isYouTubeDependencieLoaded) {
         if (document.getElementById('iframe_api') === null) {
-          var tag = document.createElement('script'),
-            firstScriptTag = document.getElementsByTagName('script')[0]
+          const tag = document.createElement('script')
+          const firstScriptTag = document.getElementsByTagName('script')[0]
 
           tag.id = 'iframe_api'
           tag.src = 'https://www.youtube.com/iframe_api'
@@ -436,12 +435,12 @@
           firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
         }
 
-        if (waitingEls.indexOf(el) === -1) {
+        if (!waitingEls.includes(el)) {
           waitingEls.push(el)
         }
 
-        window.onYouTubePlayerAPIReady = function () {
-          Array.prototype.forEach.call(waitingEls, function (waitingEl) {
+        window.onYouTubePlayerAPIReady = () => {
+          Array.prototype.forEach.call(waitingEls, waitingEl => {
             add(waitingEl)
           })
 
@@ -460,13 +459,13 @@
      */
     var add = function add (el, callback) {
       // Check if element already exists
-      if (gallery.indexOf(el) === -1) {
+      if (!gallery.includes(el)) {
         gallery.push(el)
         elementsLength++
 
         // Set zoom icon if necessary
         if (config.zoom && el.querySelector('img')) {
-          var tobiZoom = document.createElement('div')
+          const tobiZoom = document.createElement('div')
 
           tobiZoom.className = 'tobi-zoom__icon'
           tobiZoom.innerHTML = config.zoomText
@@ -507,7 +506,7 @@
       lightbox = document.createElement('div')
       lightbox.setAttribute('role', 'dialog')
       lightbox.setAttribute('aria-hidden', 'true')
-      lightbox.className = 'tobi tobi--theme-' + config.theme
+      lightbox.className = `tobi tobi--theme-${config.theme}`
 
       // Create slider container
       slider = document.createElement('div')
@@ -544,11 +543,11 @@
       lightbox.appendChild(counter)
 
       // Resize event using requestAnimationFrame
-      browserWindow.addEventListener('resize', function () {
+      browserWindow.addEventListener('resize', () => {
         if (!resizeTicking) {
           resizeTicking = true
 
-          browserWindow.requestAnimationFrame(function () {
+          browserWindow.requestAnimationFrame(() => {
             updateOffset()
 
             resizeTicking = false
@@ -565,16 +564,17 @@
      */
     var createLightboxSlide = function createLightboxSlide (el) {
       // Detect type
-      for (var index in supportedElements) {
+      for (const index in supportedElements) {
         if (supportedElements.hasOwnProperty(index)) {
           if (supportedElements[index].checkSupport(el)) {
             // Create slide elements
-            var sliderElement = document.createElement('div'),
-              sliderElementContent = document.createElement('div')
+            const sliderElement = document.createElement('div')
+
+            const sliderElementContent = document.createElement('div')
 
             sliderElement.className = 'tobi__slider__slide'
             sliderElement.style.position = 'absolute'
-            sliderElement.style.left = x * 100 + '%'
+            sliderElement.style.left = `${x * 100}%`
             sliderElementContent.className = 'tobi__slider__slide__content'
 
             // Create type elements
@@ -612,12 +612,12 @@
         }
 
         if (index === currentIndex) {
-          throw new Error('Ups, slide ' + index + ' is already selected.')
+          throw new Error(`Ups, slide ${index} is already selected.`)
         }
       }
 
       if (index === -1 || index >= elementsLength) {
-        throw new Error('Ups, I can\'t find slide ' + index + '.')
+        throw new Error(`Ups, I can't find slide ${index}.`)
       }
 
       if (config.hideScrollbar) {
@@ -668,7 +668,7 @@
      *
      * @param {function} callback - Optional callback to call after close
      */
-    var close = function close (callback) {
+    const close = function close (callback) {
       if (!isOpen()) {
         throw new Error('Tobi is already closed.')
       }
@@ -685,8 +685,8 @@
       lastFocus.focus()
 
       // Don't forget to cleanup our current element
-      var container = sliderElements[currentIndex].querySelector('.tobi__slider__slide__content')
-      var type = container.getAttribute('data-type')
+      const container = sliderElements[currentIndex].querySelector('.tobi__slider__slide__content')
+      const type = container.getAttribute('data-type')
       supportedElements[type].onLeave(container)
       supportedElements[type].onCleanup(container)
 
@@ -710,8 +710,8 @@
         return
       }
 
-      var container = sliderElements[index].querySelector('.tobi__slider__slide__content')
-      var type = container.getAttribute('data-type')
+      const container = sliderElements[index].querySelector('.tobi__slider__slide__content')
+      const type = container.getAttribute('data-type')
 
       supportedElements[type].onPreload(container)
     }
@@ -727,8 +727,8 @@
         return
       }
 
-      var container = sliderElements[index].querySelector('.tobi__slider__slide__content')
-      var type = container.getAttribute('data-type')
+      const container = sliderElements[index].querySelector('.tobi__slider__slide__content')
+      const type = container.getAttribute('data-type')
 
       supportedElements[type].onLoad(container)
     }
@@ -738,7 +738,7 @@
      *
      * @param {function} callback - Optional callback function
      */
-    var prev = function prev (callback) {
+    const prev = function prev (callback) {
       if (currentIndex > 0) {
         leave(currentIndex)
         load(--currentIndex)
@@ -757,7 +757,7 @@
      *
      * @param {function} callback - Optional callback function
      */
-    var next = function next (callback) {
+    const next = function next (callback) {
       if (currentIndex < elementsLength - 1) {
         leave(currentIndex)
         load(++currentIndex)
@@ -782,8 +782,8 @@
         return
       }
 
-      var container = sliderElements[index].querySelector('.tobi__slider__slide__content')
-      var type = container.getAttribute('data-type')
+      const container = sliderElements[index].querySelector('.tobi__slider__slide__content')
+      const type = container.getAttribute('data-type')
 
       supportedElements[type].onLeave(container)
     }
@@ -799,8 +799,8 @@
         return
       }
 
-      var container = sliderElements[index].querySelector('.tobi__slider__slide__content')
-      var type = container.getAttribute('data-type')
+      const container = sliderElements[index].querySelector('.tobi__slider__slide__content')
+      const type = container.getAttribute('data-type')
 
       supportedElements[type].onCleanup(container)
     }
@@ -812,7 +812,7 @@
     var updateOffset = function updateOffset () {
       offset = -currentIndex * window.innerWidth
 
-      slider.style[transformProperty] = 'translate3d(' + offset + 'px, 0, 0)'
+      slider.style[transformProperty] = `translate3d(${offset}px, 0, 0)`
       offsetTmp = offset
     }
 
@@ -820,8 +820,8 @@
      * Update the counter
      *
      */
-    var updateCounter = function updateCounter () {
-      counter.textContent = (currentIndex + 1) + '/' + elementsLength
+    const updateCounter = function updateCounter () {
+      counter.textContent = `${currentIndex + 1}/${elementsLength}`
     }
 
     /**
@@ -829,8 +829,8 @@
      *
      * @param {string} dir - Current slide direction
      */
-    var updateFocus = function updateFocus (dir) {
-      var focusableEls = null
+    const updateFocus = function updateFocus (dir) {
+      let focusableEls = null
 
       if (config.nav) {
         // Display the next and previous buttons
@@ -892,11 +892,11 @@
      * Recalculate drag / swipe event
      *
      */
-    var updateAfterDrag = function updateAfterDrag () {
-      var movementX = drag.endX - drag.startX,
-        movementY = drag.endY - drag.startY,
-        movementXDistance = Math.abs(movementX),
-        movementYDistance = Math.abs(movementY)
+    const updateAfterDrag = function updateAfterDrag () {
+      const movementX = drag.endX - drag.startX
+      const movementY = drag.endY - drag.startY
+      const movementXDistance = Math.abs(movementX)
+      const movementYDistance = Math.abs(movementY)
 
       if (movementX > 0 && movementXDistance > config.threshold && currentIndex > 0) {
         prev()
@@ -913,7 +913,7 @@
      * Click event handler
      *
      */
-    var clickHandler = function clickHandler (event) {
+    const clickHandler = function clickHandler (event) {
       if (event.target === prevButton) {
         prev()
       } else if (event.target === nextButton) {
@@ -929,7 +929,7 @@
      * Keydown event handler
      *
      */
-    var keydownHandler = function keydownHandler (event) {
+    const keydownHandler = function keydownHandler (event) {
       if (event.keyCode === 9) {
         // `TAB` Key: Navigate to the next/previous focusable element
         if (event.shiftKey) {
@@ -964,7 +964,7 @@
      * Touchstart event handler
      *
      */
-    var touchstartHandler = function touchstartHandler (event) {
+    const touchstartHandler = function touchstartHandler (event) {
       // Prevent dragging / swiping on textareas inputs and selects
       if (isIgnoreElement(event.target)) {
         return
@@ -984,7 +984,7 @@
      * Touchmove event handler
      *
      */
-    var touchmoveHandler = function touchmoveHandler (event) {
+    const touchmoveHandler = function touchmoveHandler (event) {
       event.stopPropagation()
 
       if (pointerDown) {
@@ -996,7 +996,7 @@
         if (!touchmoveTicking) {
           touchmoveTicking = true
 
-          browserWindow.requestAnimationFrame(function () {
+          browserWindow.requestAnimationFrame(() => {
             doSwipe()
             touchmoveTicking = false
           })
@@ -1008,7 +1008,7 @@
      * Touchend event handler
      *
      */
-    var touchendHandler = function touchendHandler (event) {
+    const touchendHandler = function touchendHandler (event) {
       event.stopPropagation()
 
       pointerDown = false
@@ -1029,7 +1029,7 @@
      * Mousedown event handler
      *
      */
-    var mousedownHandler = function mousedownHandler (event) {
+    const mousedownHandler = function mousedownHandler (event) {
       // Prevent dragging / swiping on textareas inputs and selects
       if (isIgnoreElement(event.target)) {
         return
@@ -1050,7 +1050,7 @@
      * Mousemove event handler
      *
      */
-    var mousemoveHandler = function mousemoveHandler (event) {
+    const mousemoveHandler = function mousemoveHandler (event) {
       event.preventDefault()
 
       if (pointerDown) {
@@ -1060,7 +1060,7 @@
         if (!mousemoveTicking) {
           mousemoveTicking = true
 
-          browserWindow.requestAnimationFrame(function () {
+          browserWindow.requestAnimationFrame(() => {
             doSwipe()
             mousemoveTicking = false
           })
@@ -1072,7 +1072,7 @@
      * Mouseup event handler
      *
      */
-    var mouseupHandler = function mouseupHandler (event) {
+    const mouseupHandler = function mouseupHandler (event) {
       event.stopPropagation()
 
       pointerDown = false
@@ -1096,13 +1096,13 @@
     var doSwipe = function doSwipe () {
       if (Math.abs(drag.startX - drag.endX) > 0 && !isDraggingY && config.swipeClose) {
         // Horizontal swipe
-        slider.style[transformProperty] = 'translate3d(' + (offsetTmp - Math.round(drag.startX - drag.endX)) + 'px, 0, 0)'
+        slider.style[transformProperty] = `translate3d(${offsetTmp - Math.round(drag.startX - drag.endX)}px, 0, 0)`
 
         isDraggingX = true
         isDraggingY = false
       } else if (Math.abs(drag.startY - drag.endY) > 0 && !isDraggingX) {
         // Vertical swipe
-        slider.style[transformProperty] = 'translate3d(' + (offsetTmp + 'px, -' + Math.round(drag.startY - drag.endY)) + 'px, 0)'
+        slider.style[transformProperty] = `translate3d(${offsetTmp}px, -${Math.round(drag.startY - drag.endY)}px, 0)`
 
         isDraggingX = false
         isDraggingY = true
@@ -1181,10 +1181,10 @@
      * @param {HTMLElement} el - Element to remove all `src` attributes
      */
     var removeSources = function setVideoSources (el) {
-      var sources = el.querySelectorAll('src')
+      const sources = el.querySelectorAll('src')
 
       if (sources) {
-        Array.prototype.forEach.call(sources, function (source) {
+        Array.prototype.forEach.call(sources, source => {
           source.setAttribute('src', '')
         })
       }
@@ -1232,7 +1232,7 @@
      *
      * @param {function} callback - Optional callback to call after reset
      */
-    var reset = function reset (callback) {
+    const reset = function reset (callback) {
       if (slider) {
         while (slider.firstChild) {
           slider.removeChild(slider.firstChild)
@@ -1267,28 +1267,28 @@
      *
      */
     var isIgnoreElement = function isIgnoreElement (el) {
-      return ['TEXTAREA', 'OPTION', 'INPUT', 'SELECT'].indexOf(el.nodeName) !== -1 || el === prevButton || el === nextButton || el === closeButton || elementsLength === 1
+      return ['TEXTAREA', 'OPTION', 'INPUT', 'SELECT'].includes(el.nodeName) || el === prevButton || el === nextButton || el === closeButton || elementsLength === 1
     }
 
     /**
      * Return current index
      *
      */
-    var currentSlide = function currentSlide () {
+    const currentSlide = function currentSlide () {
       return currentIndex
     }
 
     init(userOptions)
 
     return {
-      open: open,
-      prev: prev,
-      next: next,
-      close: close,
+      open,
+      prev,
+      next,
+      close,
       add: checkDependencies,
-      reset: reset,
-      isOpen: isOpen,
-      currentSlide: currentSlide
+      reset,
+      isOpen,
+      currentSlide
     }
   }
 
