@@ -68,7 +68,7 @@
   z-index: 1337;
 }
 
-.tobi[aria-hidden="true"] {
+.tobi[aria-hidden='true'] {
   display: none;
 }
 
@@ -161,7 +161,7 @@
   width: 100%;
 }
 
-.tobi__slider__slide__content[data-type="html"] {
+.tobi__slider__slide__content[data-type='html'] {
   max-height: 85vh;
   max-width: 85vw;
   overflow: hidden;
@@ -169,14 +169,14 @@
   overscroll-behavior: contain;
 }
 
-.tobi__slider__slide__content[data-type="html"] video {
+.tobi__slider__slide__content[data-type='html'] video {
   cursor: auto;
   display: block !important;
   max-height: 85vh;
   max-width: 85vw;
 }
 
-.tobi__slider__slide__content[data-type="iframe"] {
+.tobi__slider__slide__content[data-type='iframe'] {
   max-height: 85vh;
   max-width: 85vw;
   overflow: hidden;
@@ -184,13 +184,13 @@
   overscroll-behavior: contain;
 }
 
-.tobi__slider__slide__content[data-type="iframe"] iframe {
+.tobi__slider__slide__content[data-type='iframe'] iframe {
   display: block !important;
   height: 85vh;
   width: 85vw;
 }
 
-.tobi__slider__slide__content[data-type="youtube"] {
+.tobi__slider__slide__content[data-type='youtube'] {
   max-height: 85vh;
   max-width: 85vw;
   overflow: hidden;
@@ -198,7 +198,7 @@
   overscroll-behavior: contain;
 }
 
-.tobi__slider__slide__content[data-type="youtube"] iframe {
+.tobi__slider__slide__content[data-type='youtube'] iframe {
   display: block !important;
 }
 
@@ -223,7 +223,7 @@
           justify-content: center;
   line-height: 1;
   margin: 0;
-  opacity: .5;
+  opacity: 0.5;
   padding-bottom: 0.22222em;
   padding-left: 0.22222em;
   padding-right: 0.22222em;
@@ -301,7 +301,7 @@
   width: 3.33333em;
 }
 
-.tobi button:disabled, .tobi button[aria-hidden="true"] {
+.tobi button:disabled, .tobi button[aria-hidden='true'] {
   display: none;
 }
 
@@ -325,7 +325,7 @@
   top: 2.22222em;
 }
 
-.tobi__counter[aria-hidden="true"] {
+.tobi__counter[aria-hidden='true'] {
   display: none;
 }
 
@@ -346,7 +346,7 @@
   border: 0.22222em solid #949ba3;
   border-top-color: #fff;
   bottom: 0;
-  content: "";
+  content: '';
   left: 0;
   position: absolute;
   right: 0;

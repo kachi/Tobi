@@ -1,23 +1,23 @@
-$baseFontSize: 18;
+$base-font-size: 18 !default;
 
-$transitionDuration: .3s;
-$transitionTimingFunction: cubic-bezier(.19, 1, .22, 1);
+$transition-duration: .3s !default;
+$transition-timing-function: cubic-bezier(.19, 1, .22, 1) !default;
 
-$zoomIconBackground: rgba(26, 42, 58, .94);
-$zoomIconColor: #fff;
+$zoom-icon-background: rgba(26, 42, 58, .94) !default;
+$zoom-icon-color: #fff !default;
 
-$lightboxBackground: rgba(26, 42, 58, .94);
+$lightbox-background: rgba(26, 42, 58, .94) !default;
 
-$figcaptionBackground: rgba(255, 255, 255, .94);
-$figcaptionColor: #1a2a3a;
+$figcaption-background: rgba(255, 255, 255, .94) !default;
+$figcaption-color: #1a2a3a !default;
 
-$counterBackground: transparent;
-$counterColor: #fff;
+$counter-background: transparent !default;
+$counter-color: #fff !default;
 
-$buttonBackground: transparent;
-$buttonColor: #fff;
+$button-background: transparent !default;
+$button-color: #fff !default;
 
-$loaderColor: #fff;
+$loader-color: #fff !default;
 
-$slideMaxHeight: 85vh;
-$slideMaxWidth: 85vw;
+$slide-max-height: 85vh !default;
+$slide-max-width: 85vw !default;

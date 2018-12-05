@@ -1,5 +1,6 @@
-@import '_variables.scss';
-@import '_functions.scss';
+@import
+  'variables',
+  'functions';
 
 /* Link */
 .tobi-zoom {
@@ -16,9 +17,9 @@
 
   &__icon {
     align-items: center;
-    background-color: $zoomIconBackground;
+    background-color: $zoom-icon-background;
     bottom: 0;
-    color: $zoomIconColor;
+    color: $zoom-icon-color;
     display: flex;
     justify-content: center;
     line-height: 1;
@@ -27,7 +28,7 @@
 
 
     & svg {
-      color: $zoomIconColor;
+      color: $zoom-icon-color;
       fill: none;
       height: em(20);
       padding-bottom: em(4);
@@ -38,7 +39,7 @@
       stroke-linecap: square;
       stroke-linejoin: miter;
       stroke-width: 2;
-      stroke: $zoomIconColor;
+      stroke: $zoom-icon-color;
       width: em(20);
     }
   }
@@ -51,11 +52,11 @@
 
 /* Lightbox */
 .tobi {
-  background-color: $lightboxBackground;
+  background-color: $lightbox-background;
   bottom: 0;
   box-sizing: border-box;
   contain: strict;
-  font-size: #{$baseFontSize}px;
+  font-size: #{$base-font-size}px;
   left: 0;
   line-height: 1.5555555555555556;
   overflow: hidden;
@@ -65,7 +66,7 @@
   z-index: 1337;
 
 
-  &[aria-hidden="true"] {
+  &[aria-hidden='true'] {
     display: none;
   }
 
@@ -87,9 +88,9 @@
 
 
   &:not(&--is-dragging) {
-    transition-duration: $transitionDuration;
+    transition-duration: $transition-duration;
     transition-property: transform;
-    transition-timing-function: $transitionTimingFunction;
+    transition-timing-function: $transition-timing-function;
 
     @media screen and (prefers-reduced-motion: reduce) {
       transition: none;
@@ -127,15 +128,15 @@
     > img {
       display: block;
       height: auto;
-      max-height: $slideMaxHeight;
-      max-width: $slideMaxWidth;
+      max-height: $slide-max-height;
+      max-width: $slide-max-width;
       width: auto;
     }
 
     > figcaption {
-      background-color: $figcaptionBackground;
+      background-color: $figcaption-background;
       bottom: 0;
-      color: $figcaptionColor;
+      color: $figcaption-color;
       display: block;
       left: 0;
       padding-bottom: em(4);
@@ -148,9 +149,9 @@
     }
   }
 
-  &[data-type="html"] {
-    max-height: $slideMaxHeight;
-    max-width: $slideMaxWidth;
+  &[data-type='html'] {
+    max-height: $slide-max-height;
+    max-width: $slide-max-width;
     overflow: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -159,14 +160,14 @@
     & video {
       cursor: auto;
       display: block !important;
-      max-height: $slideMaxHeight;
-      max-width: $slideMaxWidth;
+      max-height: $slide-max-height;
+      max-width: $slide-max-width;
     }
   }
 
-  &[data-type="iframe"] {
-    max-height: $slideMaxHeight;
-    max-width: $slideMaxWidth;
+  &[data-type='iframe'] {
+    max-height: $slide-max-height;
+    max-width: $slide-max-width;
     overflow: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -174,14 +175,14 @@
 
     & iframe {
       display: block !important;
-      height: $slideMaxHeight;
-      width: $slideMaxWidth;
+      height: $slide-max-height;
+      width: $slide-max-width;
     }
   }
 
-  &[data-type="youtube"] {
-    max-height: $slideMaxHeight;
-    max-width: $slideMaxWidth;
+  &[data-type='youtube'] {
+    max-height: $slide-max-height;
+    max-width: $slide-max-width;
     overflow: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -197,25 +198,25 @@
 .tobi button {
   align-items: center;
   appearance: none;
-  background-color: $buttonBackground;
+  background-color: $button-background;
   border: em(1) solid transparent;
-  color: $buttonColor;
+  color: $button-color;
   cursor: pointer;
   display: flex;
   font: inherit;
   justify-content: center;
   line-height: 1;
   margin: 0;
-  opacity: .5;
+  opacity: 0.5;
   padding-bottom: em(4);
   padding-left: em(4);
   padding-right: em(4);
   padding-top: em(4);
   position: absolute;
   touch-action: manipulation;
-  transition-duration: $transitionDuration;
+  transition-duration: $transition-duration;
   transition-property: opacity, transform;
-  transition-timing-function: $transitionTimingFunction;
+  transition-timing-function: $transition-timing-function;
   will-change: opacity, transform;
 
   @media screen and (prefers-reduced-motion: reduce) {
@@ -277,7 +278,7 @@
   }
 
   &:disabled,
-  &[aria-hidden="true"] {
+  &[aria-hidden='true'] {
     display: none;
   }
 }
@@ -285,8 +286,8 @@
 /* Counter */
 .tobi__counter {
   align-items: center;
-  background-color: $counterBackground;
-  color: $counterColor;
+  background-color: $counter-background;
+  color: $counter-color;
   display: flex;
   font-size: em(20);
   justify-content: center;
@@ -296,7 +297,7 @@
   top: em(40);
 
 
-  &[aria-hidden="true"] {
+  &[aria-hidden='true'] {
     display: none;
   }
 }
@@ -315,9 +316,9 @@
     animation: spin 1s infinite;
     border-radius: 100%;
     border: em(4) solid #949ba3;
-    border-top-color: $loaderColor;
+    border-top-color: $loader-color;
     bottom: 0;
-    content: "";
+    content: '';
     left: 0;
     position: absolute;
     right: 0;
