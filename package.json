@@ -6,6 +6,7 @@
   "style": "css/tobi.css",
   "devDependencies": {
     "standard": "*",
+    "rollup": "*",
     "autoprefixer": "*"
   },
   "browserslist": [
